@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.support.MutableMessageHeaders;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
@@ -48,7 +47,7 @@ public class DemoApplication {
 		MessageHeaders messageHeaders = new MutableMessageHeaders(map);
 //		channel1.send(MessageBuilder.createMessage("teste", messageHeaders));
 		httpChannel.send(MessageBuilder.createMessage("teste", messageHeaders));
-		return "Chibana's integration";
+		return "Chibana's integration\n";
 	}
 	@GetMapping("channel2/{ID}")
 	public String channel2(@PathVariable("ID") String id) {
@@ -56,7 +55,7 @@ public class DemoApplication {
 		map.put("ID", id);
 		MessageHeaders messageHeaders = new MutableMessageHeaders(map);
 		channel2.send(MessageBuilder.createMessage("teste", messageHeaders));		
-		return "Chibana's integration";
+		return "Chibana's integration\n";
 	}
 	
 	@PostMapping("example")

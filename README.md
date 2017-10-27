@@ -1,2 +1,2 @@
-# spring-boot-demo
-spring-boot-demo
+# spring-integration-demo
+spring-integration-demo

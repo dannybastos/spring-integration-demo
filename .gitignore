@@ -5,3 +5,6 @@
 .project
 .settings
 bin/
+.idea/
+spring-boot-demo.iml
+build/

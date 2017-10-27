@@ -2,14 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:int="http://www.springframework.org/schema/integration"
-	xmlns:task="http://www.springframework.org/schema/task" xmlns:int-http="http://www.springframework.org/schema/integration/http"
-	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.3.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<context:component-scan base-package="com.example.demo"></context:component-scan>
+	<context:component-scan base-package="com.example.demo" />
 
 
 
@@ -25,13 +25,13 @@
 
 	<int:service-activator id="barServiceActivator"
 		input-channel="pubChannel" method="sendMail">
-		<bean class="com.example.demo.BarService"></bean>
+		<bean class="com.example.demo.BarService" />
 	</int:service-activator>
 
 	<int:filter id="filter1" input-channel="channel2" ref="filterService"
-		method="filter" output-channel="pubChannel"></int:filter>
+		method="filter" output-channel="pubChannel" />
 
-	<int-http:outbound-gateway request-channel="httpChannel"
+	<int-http:outbound-gateway id="httpService" request-channel="httpChannel"
 		url="http://localhost:8080/httpservice" http-method="POST"
 		expected-response-type="java.lang.String" reply-channel="pubChannel" />
 

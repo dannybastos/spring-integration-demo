@@ -31,16 +31,13 @@
 	<int:filter id="filter1" input-channel="channel2" ref="filterService"
 		method="filter" output-channel="pubChannel"></int:filter>
 
-	<!-- <bean id="httpOutbound" -->
-	<!-- class="org.springframework.integration.http.outbound.HttpRequestExecutingMessageHandler"> -->
-	<!-- <constructor-arg value="http://localhost:8080/example" /> -->
-	<!-- <property name="outputChannel" ref="pubChannel" /> -->
-	<!-- </bean> -->
-
 	<int-http:outbound-gateway request-channel="httpChannel"
 		url="http://localhost:8080/httpservice" http-method="POST"
-		expected-response-type="java.lang.String" reply-channel="pubChannel" 
-		 />
+		expected-response-type="java.lang.String" reply-channel="pubChannel" />
 
+	<!-- <int-http:outbound-channel-adapter -->
+	<!-- http-method="POST" channel="httpChannel" url="http://localhost:8080/httpservice" -->
+	<!-- expected-response-type="java.lang.String"> -->
+	<!-- </int-http:outbound-channel-adapter> -->
 </beans>
 

@@ -38,12 +38,9 @@
 	<!-- </bean> -->
 
 	<int-http:outbound-gateway request-channel="httpChannel"
-		url="http://localhost:8080/example" http-method="POST"
+		url="http://localhost:8080/httpservice" http-method="POST"
 		expected-response-type="java.lang.String" reply-channel="pubChannel" 
-		message-converters="stringMessageConverter"
 		 />
-
-	<bean id="stringMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter"></bean>
 
 </beans>
 

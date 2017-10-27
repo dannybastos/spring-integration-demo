@@ -16,6 +16,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(scanBasePackages="com.example.demo")
@@ -46,7 +47,12 @@ public class DemoApplication {
 		map.put("ID", id);
 		MessageHeaders messageHeaders = new MutableMessageHeaders(map);
 //		channel1.send(MessageBuilder.createMessage("teste", messageHeaders));
-		httpChannel.send(MessageBuilder.createMessage("teste", messageHeaders));
+		httpChannel.send(MessageBuilder.createMessage(
+				"{\n" + 
+				"	\"ID\":"+id+"\n" + 
+				"	,\"MESSAGE\":\"TESTE\"\n" + 
+				"}"
+				, messageHeaders));
 		return "Chibana's integration\n";
 	}
 	@GetMapping("channel2/{ID}")
@@ -58,9 +64,9 @@ public class DemoApplication {
 		return "Chibana's integration\n";
 	}
 	
-	@PostMapping("example")
-	public String channel3(String message) {
-		return "Chibana's integration\n";
+	@PostMapping("httpservice")
+	public String channel3(@RequestBody String message) {
+		return "HttpResult:200";
 	}
 
 }

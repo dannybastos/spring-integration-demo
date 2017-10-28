@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.integration.config.EnableIntegration;
+import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -38,10 +41,12 @@ public class DemoApplication {
 	@Autowired
 	@Qualifier("channel2")
 	private MessageChannel channel2;
-	
-	@Autowired
-	@Qualifier("httpChannel")
-	private MessageChannel httpChannel;
+
+    @Autowired
+    @Qualifier("httpChannel")
+    private MessageChannel httpChannel;
+
+    Logger log = LoggerFactory.getLogger(getClass());
 
 	private AtomicInteger atomicId = new AtomicInteger();
 
@@ -62,8 +67,9 @@ public class DemoApplication {
 
 	@GetMapping("start/{MSG}")
 	public ResponseEntity<Serializable> start(@PathVariable("MSG") String msg) {
-		httpChannel.send(this.createMsg(msg));
-		return ResponseEntity.ok(msg);
+        MessagingTemplate messagingTemplate = new MessagingTemplate();
+        Message<?> result = messagingTemplate.sendAndReceive(httpChannel, this.createMsg(msg));
+        return ResponseEntity.ok((HelloModel) result.getPayload());
 	}
 
 	@PostMapping("httpservice")
@@ -82,7 +88,7 @@ public class DemoApplication {
         try {
 			json = new ObjectMapper().writeValueAsString(model);
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+            log.error(e.getMessage(), e);
 		}
         return MessageBuilder.createMessage(json, messageHeaders);
     }

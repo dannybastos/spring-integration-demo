@@ -31,9 +31,14 @@
 	<int:filter id="filter1" input-channel="channel2" ref="filterService"
 		method="filter" output-channel="pubChannel" />
 
-	<int-http:outbound-gateway id="httpService" request-channel="httpChannel"
-		url="http://localhost:8080/httpservice" http-method="POST"
-		expected-response-type="java.lang.String" reply-channel="pubChannel" />
+	<int-http:outbound-gateway id="httpService"
+		request-channel="httpChannel" url="http://localhost:8080/httpservice"
+		http-method="POST" 
+		expected-response-type="com.example.demo.HelloModel"
+		reply-channel="pubChannel"
+		>
+	</int-http:outbound-gateway>
+	<bean id="helloConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
 
 	<!-- <int-http:outbound-channel-adapter -->
 	<!-- http-method="POST" channel="httpChannel" url="http://localhost:8080/httpservice" -->

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +75,13 @@ public class DemoApplication {
 
 	@PostMapping("httpservice")
 	public ResponseEntity<Serializable> channel3(@RequestBody String message) {
-        HelloModel model = new HelloModel("OK",atomicId.getAndIncrement());
+        HelloModel model = null;
+		try {
+			model = new ObjectMapper().readValue(message, HelloModel.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        model.setMsg(model.getMsg().concat(" - OK"));
 		return  ResponseEntity.ok(model);
 	}
 
@@ -83,7 +90,7 @@ public class DemoApplication {
         final int id = atomicId.getAndIncrement();
         map.put("ID", id);
         MessageHeaders messageHeaders = new MessageHeaders(map);
-        HelloModel model = new HelloModel(msg, 10);
+        HelloModel model = new HelloModel(msg, id);
         String json = null;
         try {
 			json = new ObjectMapper().writeValueAsString(model);

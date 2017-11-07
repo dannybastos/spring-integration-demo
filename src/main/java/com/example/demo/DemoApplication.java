@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.integration.config.EnableIntegration;
-import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -68,9 +67,17 @@ public class DemoApplication {
 
 	@GetMapping("start/{MSG}")
 	public ResponseEntity<Serializable> start(@PathVariable("MSG") String msg) {
-        MessagingTemplate messagingTemplate = new MessagingTemplate();
-        Message<?> result = messagingTemplate.sendAndReceive(httpChannel, this.createMsg(msg));
-        return ResponseEntity.ok((HelloModel) result.getPayload());
+		ResponseEntity<Serializable> result = null;
+//        MessagingTemplate messagingTemplate = new MessagingTemplate();
+//        Message<?> result = messagingTemplate.sendAndReceive(httpChannel, this.createMsg(msg));
+		try {
+			httpChannel.send(this.createMsg(msg)); 
+			result =  ResponseEntity.ok().build();
+		} catch (Exception e) {
+			result =  ResponseEntity.badRequest().body("falha de teste\n");
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	@PostMapping("httpservice")
@@ -82,7 +89,8 @@ public class DemoApplication {
 			e.printStackTrace();
 		}
         model.setMsg(model.getMsg().concat(" - OK"));
-		return  ResponseEntity.ok(model);
+//		return  ResponseEntity.ok(model);
+        return  ResponseEntity.badRequest().build();
 	}
 
     private Message<Serializable> createMsg(String msg) {

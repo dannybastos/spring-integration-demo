@@ -17,6 +17,7 @@
 	<int:channel id="channel2" />
 	<int:publish-subscribe-channel id="pubChannel" />
 	<int:channel id="httpChannel" />
+	<int:channel id="errorChannel" />
 
 	<int:service-activator id="fooServiceActivator"
 		input-channel="channel1" output-channel="pubChannel" ref="fooService"
@@ -29,14 +30,19 @@
 	</int:service-activator>
 
 	<int:filter id="filter1" input-channel="channel2" ref="filterService"
-		method="filter" output-channel="pubChannel" />
+		method="filter" output-channel="pubChannel" discard-channel="errorChannel" />
 
 	<int-http:outbound-gateway id="httpService"
 		request-channel="httpChannel" url="http://localhost:8080/httpservice"
 		http-method="POST" 
 		expected-response-type="com.example.demo.HelloModel"
+		reply-channel="pubChannel"
 		>
 	</int-http:outbound-gateway>
+	
+	<int:service-activator id="errorHandler" input-channel="errorChannel" method="onError">
+		<bean class="com.example.demo.ErrorHandler" ></bean>
+	</int:service-activator>
 
 	<!--<bean id="helloConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
 	<!-- <int-http:outbound-channel-adapter -->

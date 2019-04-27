@@ -6,6 +6,6 @@
 .settings
 bin/
 .idea/
-spring-boot-demo.iml
+*.iml
 build/
 /out/

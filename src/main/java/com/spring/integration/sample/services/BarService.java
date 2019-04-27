@@ -1,10 +1,12 @@
-package com.example.demo;
+package com.spring.integration.sample.services;
 
 import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+
+import com.spring.integration.sample.model.HelloModel;
 
 public class BarService {
 	Logger log = LoggerFactory.getLogger(getClass());
@@ -15,6 +17,6 @@ public class BarService {
 		} else {
 			msg = (String) message.getPayload();
 		}		
-		log.info(String.format("PUB => ID=%s, PAYLODAD:%s", message.getHeaders().get("ID"),msg));
+		log.info("PUB => ID:{}, PAYLODAD:{}", message.getHeaders().get("ID"),msg);
 	}
 }

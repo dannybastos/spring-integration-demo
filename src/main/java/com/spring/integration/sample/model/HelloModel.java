@@ -1,13 +1,8 @@
-package com.example.demo;
+package com.spring.integration.sample.model;
 
 import java.io.Serializable;
 
 public class HelloModel implements Serializable {
-	@Override
-	public String toString() {
-		return "HelloModel [id=" + id + ", msg=" + msg + "]";
-	}
-
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
@@ -36,4 +31,9 @@ public class HelloModel implements Serializable {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+	@Override
+	public String toString() {
+		return String.format("HelloModel [id=%s, msg=%s]", id, msg);
+	}
 }

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.spring.integration.sample.filter;
 
 import java.io.Serializable;
 
@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 public class FilterService {
 	
 	public boolean filter(Message<Serializable> message) {
-		if (message.getPayload().toString().equals("20")) {
-			return true;
-		}
-		return false;
+		return message.getPayload().toString().equals("20");
 	}
 }

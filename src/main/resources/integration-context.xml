@@ -9,45 +9,39 @@
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.3.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-	<context:component-scan base-package="com.example.demo" />
+	<context:component-scan base-package="com.spring.integration.sample" />
 
-
-
-	<int:channel id="channel1" />
-	<int:channel id="channel2" />
+	<int:channel id="inputChannel1" />
+	<int:channel id="inputChannel2" />
 	<int:publish-subscribe-channel id="pubChannel" />
 	<int:channel id="httpChannel" />
 	<int:channel id="errorChannel" />
 
 	<int:service-activator id="fooServiceActivator"
-		input-channel="channel1" output-channel="pubChannel" ref="fooService"
+		input-channel="inputChannel1" output-channel="pubChannel" ref="fooService"
 		method="processMessage">
 	</int:service-activator>
 
 	<int:service-activator id="barServiceActivator"
 		input-channel="pubChannel" method="sendMail">
-		<bean class="com.example.demo.BarService" />
+		<bean class="com.spring.integration.sample.services.BarService" />
 	</int:service-activator>
 
-	<int:filter id="filter1" input-channel="channel2" ref="filterService"
+	<int:filter id="filter1" input-channel="inputChannel2" ref="filterService"
 		method="filter" output-channel="pubChannel" discard-channel="errorChannel" />
 
 	<int-http:outbound-gateway id="httpService"
 		request-channel="httpChannel" url="http://localhost:8080/httpservice"
 		http-method="POST" 
-		expected-response-type="com.example.demo.HelloModel"
-		reply-channel="pubChannel"
+		expected-response-type="com.spring.integration.sample.HelloModel"
+		reply-channel="pubChannel" error-handler="defaultResponseErrorHandler"
 		>
 	</int-http:outbound-gateway>
 	
+	<bean id="defaultResponseErrorHandler" class="org.springframework.web.client.DefaultResponseErrorHandler" />
+	
 	<int:service-activator id="errorHandler" input-channel="errorChannel" method="onError">
-		<bean class="com.example.demo.ErrorHandler" ></bean>
+		<bean class="com.spring.integration.sample.errorhandler.ErrorHandler" ></bean>
 	</int:service-activator>
-
-	<!--<bean id="helloConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
-	<!-- <int-http:outbound-channel-adapter -->
-	<!-- http-method="POST" channel="httpChannel" url="http://localhost:8080/httpservice" -->
-	<!-- expected-response-type="java.lang.String"> -->
-	<!-- </int-http:outbound-channel-adapter> -->
 </beans>
 

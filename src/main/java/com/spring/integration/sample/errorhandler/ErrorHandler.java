@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.spring.integration.sample.errorhandler;
 
 import java.io.Serializable;
 
@@ -10,7 +10,6 @@ public class ErrorHandler {
 
 	Logger log = LoggerFactory.getLogger(getClass());
 	public void onError(Message<Serializable> msg) {
-		if (log.isInfoEnabled() )
-			log.error(String.format("payload : %s",  msg.getPayload()));		
+		log.error("payload : {}",  msg.getPayload());		
 	}	
 }

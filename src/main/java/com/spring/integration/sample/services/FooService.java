@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.spring.integration.sample.services;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class FooService {
 	Logger log = LoggerFactory.getLogger(getClass());
 	public Message<Serializable> processMessage(Message<Serializable> message) {
-		log.info(String.format("ID=%s, PAYLODAD:%s", message.getHeaders().get("ID"),message.getPayload()));
+		log.info("ID: {}, PAYLODAD: {}", message.getHeaders().get("ID"),message.getPayload());			
 		return message;
 	}
 }

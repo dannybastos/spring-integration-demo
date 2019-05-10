@@ -32,12 +32,13 @@
 
 	<int-http:outbound-gateway id="httpService"
 		request-channel="httpChannel" url="http://localhost:8080/httpservice"
-		http-method="POST" 
-		expected-response-type="com.spring.integration.sample.HelloModel"
-		reply-channel="pubChannel" error-handler="defaultResponseErrorHandler"
+		http-method="POST"
+		expected-response-type="java.lang.String"
+		reply-channel="pubChannel"
+		error-handler="defaultResponseErrorHandler"
 		>
 	</int-http:outbound-gateway>
-	
+
 	<bean id="defaultResponseErrorHandler" class="org.springframework.web.client.DefaultResponseErrorHandler" />
 	
 	<int:service-activator id="errorHandler" input-channel="errorChannel" method="onError">

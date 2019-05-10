@@ -3,4 +3,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'spring-integration-demo'
+rootProject.name = 'spring-integration-sample-app'
